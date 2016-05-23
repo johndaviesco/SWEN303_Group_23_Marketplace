@@ -41,6 +41,31 @@ router.get('/create', function(req, res, next) {
 });
 
 /* sdtytyjfugy */
+router.post('/login', function(req, res, next) {
+
+  console.log(res.body);
+  console.log(req.body.name);
+  console.log(req.body.email);
+  var data = {email: req.body.email,name: req.body.name};
+  console.log(data.email);
+  console.log(data.name);
+
+  // Pipe to database insert
+  //code 1
+  client.query("INSERT INTO user(email, name) values($1, $2) Returning *",
+    [req.body.email,
+      req.body.name,
+    ], function(err, res) {
+        if(err){
+          return console.error(err);
+        }
+        // Pull result
+        var userID = res.id;
+        res.redirect('/create/' + userID);
+    });
+});
+
+/* sdtytyjfugy */
 router.post('/create', function(req, res, next) {
   // Parse/validate (optional) form data
   // userid = req.forms[0]['userID']

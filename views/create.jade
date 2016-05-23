@@ -14,8 +14,27 @@ block content
     input(type="text" name="price" placeholder="Price")
     input(type="text" name="image" placeholder="Image URL")
     button(type="submit") Create
-  div(id="dialog" title="Dialog Title") I'm a dialog
+  
+  div(id="login-dialog" title="Login") Enter Details
+    form(method="post")
+      input(type="text" name="email" placeholder="example@mail.com")
+      input(type="text" name="name" placeholder="Joe Blogs")
     
-  script
-    $("#dialog").dialog({autoOpen:true });
+  script.
+    $('#login-dialog').dialog({ 
+      modal : true, autoOpen : true, 
+      buttons : {
+        "Login" : function () {
+          $.ajax({'url':'/login',
+            'type':'post',
+            'data':{'email':$('#email').val(),'name':$('#name').val()}
+          })
+        $(this).dialog('close');
+        },
+        "Cancel" : function () {
+          $(this).dialog('close');
+        }
+      }
+    });
+      
     
