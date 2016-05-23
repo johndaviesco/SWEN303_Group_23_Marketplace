@@ -10,15 +10,15 @@ block content
       option(value=3) Role Playing Game
     input(type="text" name="title" placeholder="Title")
     textarea(name="description")
-    input(type="hidden" name="userID")
+    input(type="hidden" id="userid" name="userID")
     input(type="text" name="price" placeholder="Price")
     input(type="text" name="image" placeholder="Image URL")
     button(type="submit") Create
   
   div(id="login-dialog" title="Login") Enter Details
     form(method="post")
-      input(type="text" name="email" placeholder="example@mail.com")
-      input(type="text" name="name" placeholder="Joe Blogs")
+      input(type="text" id="email" name="email" placeholder="example@mail.com")
+      input(type="text" id="name" name="name" placeholder="Joe Blogs")
     
   script.
     $('#login-dialog').dialog({ 
@@ -28,6 +28,9 @@ block content
           $.ajax({'url':'/login',
             'type':'post',
             'data':{'email':$('#email').val(),'name':$('#name').val()}
+          }).success(function(results){
+            console.log(results[0].id);
+            $("#userid").val(results[0].id);
           })
         $(this).dialog('close');
         },

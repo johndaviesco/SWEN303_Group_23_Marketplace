@@ -42,26 +42,31 @@ router.get('/create', function(req, res, next) {
 
 /* sdtytyjfugy */
 router.post('/login', function(req, res, next) {
+  var results = [];
 
-  console.log(res.body);
-  console.log(req.body.name);
-  console.log(req.body.email);
   var data = {email: req.body.email,name: req.body.name};
   console.log(data.email);
   console.log(data.name);
 
   // Pipe to database insert
   //code 1
-  client.query("INSERT INTO user(email, name) values($1, $2) Returning *",
-    [req.body.email,
-      req.body.name,
+  client.query("INSERT INTO m_user(email, name) values($1, $2) Returning *",
+    [data.email,
+      data.name,
     ], function(err, res) {
         if(err){
           return console.error(err);
         }
-        // Pull result
-        var userID = res.id;
-        res.redirect('/create/' + userID);
+    });
+
+    var query = client.query("SELECT id FROM m_user WHERE email = $1;",[data.email]);
+    // Stream results back one row at a time
+    query.on('row', function(row) {
+        results.push(row);
+    });
+    // After all data is returned, close connection and return results
+    query.on('end', function() {
+        return res.json(results);
     });
 });
 
