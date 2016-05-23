@@ -14,3 +14,8 @@ block content
     input(type="text" name="price" placeholder="Price")
     input(type="text" name="image" placeholder="Image URL")
     button(type="submit") Create
+  div(id="dialog" title="Dialog Title") I'm a dialog
+    
+  script
+    $("#dialog").dialog({autoOpen:true });
+    
