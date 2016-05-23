@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  h1= name
+  ul
+    each listing, index in #{listings}
+      li
+        h3= listing.title
+        span= listing.price
+        img(src= listing.imageURL)
